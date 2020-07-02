@@ -1,11 +1,9 @@
-'use strict';
+import { v4 as uuidv4 } from 'uuid';
+import { DynamoDB } from 'aws-sdk';
 
-const uuid = require('uuid');
-const AWS = require('aws-sdk'); // eslint-disable-line import/no-extraneous-dependencies
+const dynamoDb = new DynamoDB.DocumentClient();
 
-const dynamoDb = new AWS.DynamoDB.DocumentClient();
-
-module.exports.create = (event, context, callback) => {
+export const create = (event, context, callback) => {
   const timestamp = new Date().getTime();
   const data = JSON.parse(event.body);
   if (typeof data.text !== 'string') {
@@ -13,15 +11,15 @@ module.exports.create = (event, context, callback) => {
     callback(null, {
       statusCode: 400,
       headers: { 'Content-Type': 'text/plain' },
-      body: 'Couldn\'t create the todo item.',
+      body: "Couldn't create the record item :(",
     });
     return;
   }
 
   const params = {
-    TableName: process.env.DYNAMODB_TABLE,
+    TableName: process.env.DYNAMODB_TABLE!,
     Item: {
-      id: uuid.v1(),
+      id: uuidv4(),
       text: data.text,
       checked: false,
       createdAt: timestamp,
@@ -29,20 +27,17 @@ module.exports.create = (event, context, callback) => {
     },
   };
 
-  // write the todo to the database
   dynamoDb.put(params, (error) => {
-    // handle potential errors
     if (error) {
       console.error(error);
       callback(null, {
         statusCode: error.statusCode || 501,
         headers: { 'Content-Type': 'text/plain' },
-        body: 'Couldn\'t create the todo item.',
+        body: "Couldn't create the record item :(",
       });
       return;
     }
 
-    // create a response
     const response = {
       statusCode: 200,
       body: JSON.stringify(params.Item),
