@@ -26,9 +26,20 @@ From root, run:\
 
 ### Optional Seeding
 
+**🚨 This is Dangerous 🚨**
+Checked in is a `.env` file.
+
+```
+API_URL=http://localhost:3000
+STAGE=dev
+```
+
 To get started, there is a script to seed the DB with 5 mock records. (only run at initial setup)
 From root, run:\
-`yarn setup:seed`
+`yarn set-up`
+
+There is also a script to wipe all data:\
+`yarn tear-down`
 
 ## Usage
 
@@ -37,7 +48,7 @@ You can create, retrieve, update, or delete records with the following commands:
 ### Create a Record
 
 ```bash
-curl -X POST https://XXXXXXX.execute-api.us-east-1.amazonaws.com/dev/records --data '{ "text": "Learn Serverless" }'
+curl -X POST https://XXXXXXX.execute-api.us-east-1.amazonaws.com/dev/records --data '{ "name": "Album1" }'
 ```
 
 ### List all records
@@ -57,7 +68,7 @@ curl https://XXXXXXX.execute-api.us-east-1.amazonaws.com/dev/records/<id>
 
 ```bash
 # Replace the <id> part with a real id from your records table
-curl -X PUT https://XXXXXXX.execute-api.us-east-1.amazonaws.com/dev/records/<id> --data '{ "text": "Learn Serverless", "checked": true }'
+curl -X PUT https://XXXXXXX.execute-api.us-east-1.amazonaws.com/dev/records/<id> --data '{ "name": "Album1", "artists": [{"name": "Artist1"}] }'
 ```
 
 ### Delete a Record
