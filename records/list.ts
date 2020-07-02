@@ -19,11 +19,9 @@ export const list = (event, context, callback) => {
       return;
     }
 
-    const response = {
+    callback(null, {
       statusCode: 200,
       body: JSON.stringify(result.Items),
-    };
-
-    callback(null, response);
+    });
   });
 };

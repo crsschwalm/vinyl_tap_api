@@ -1,22 +1,25 @@
-export interface Artist {
-  id: string;
+export type Artist = {
   name: string;
-  bio: string;
-}
+  bio?: string;
+};
 
-export interface Track {
-  artists: Artist[];
-  duration_ms: number;
-  explicit: boolean;
-  name: string;
+export type Track = {
   track_number: number;
-}
-
-export interface Album {
-  id: string;
-  artists: Artist[];
-  genres: any[];
   name: string;
-  tracks: Track;
+  artists: Artist[];
+  duration_ms?: number;
+  explicit?: boolean;
+};
+
+export type Album = {
+  id: string;
+  name: string;
+  artists: Artist[];
+  tracks: Track[];
+  createdAt: number;
+  updatedAt: number;
   image: string;
-}
+  genres: string[];
+};
+
+export type AtLeast<T, K extends keyof T> = Partial<T> & Pick<T, K>;

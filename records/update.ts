@@ -1,54 +1,56 @@
 import { DynamoDB } from 'aws-sdk';
+import { Album } from '../types';
+import { normalizeAlbum } from '../services/record-normalizer';
 
 const dynamoDb = new DynamoDB.DocumentClient();
 
-export const update = (event, context, callback) => {
-  const timestamp = new Date().getTime();
-  const data = JSON.parse(event.body);
+export const update = (
+  { body, pathParameters }: { body: string; pathParameters: { id: string } },
+  context,
+  callback,
+) => {
+  const data: Partial<Album> = JSON.parse(body);
 
-  if (typeof data.text !== 'string' || typeof data.checked !== 'boolean') {
-    console.error('Validation Failed');
-    callback(null, {
-      statusCode: 400,
-      headers: { 'Content-Type': 'text/plain' },
-      body: "Couldn't update the record item :(",
-    });
-    return;
-  }
+  try {
+    const album = normalizeAlbum(data);
 
-  const params = {
-    TableName: process.env.DYNAMODB_TABLE!,
-    Key: {
-      id: event.pathParameters.id,
-    },
-    ExpressionAttributeNames: {
-      '#record_text': 'text',
-    },
-    ExpressionAttributeValues: {
-      ':text': data.text,
-      ':checked': data.checked,
-      ':updatedAt': timestamp,
-    },
-    UpdateExpression:
-      'SET #record_text = :text, checked = :checked, updatedAt = :updatedAt',
-    ReturnValues: 'ALL_NEW',
-  };
-
-  dynamoDb.update(params, (error, result) => {
-    if (error) {
-      console.error(error);
-      callback(null, {
-        statusCode: error.statusCode || 501,
-        headers: { 'Content-Type': 'text/plain' },
-        body: "Couldn't fetch the record item :(",
-      });
-      return;
-    }
-
-    const response = {
-      statusCode: 200,
-      body: JSON.stringify(result.Attributes),
+    const params = {
+      TableName: process.env.DYNAMODB_TABLE!,
+      Key: {
+        id: pathParameters.id,
+      },
+      ExpressionAttributeNames: {
+        '#record_name': 'name',
+      },
+      ExpressionAttributeValues: {
+        ':name': album.name,
+        ':image': album.image,
+        ':artists': album.artists,
+        ':tracks': album.tracks,
+        ':genres': album.genres,
+        ':updatedAt': album.updatedAt,
+      },
+      UpdateExpression:
+        'SET #record_name = :name, image = :image, artists = :artists, tracks = :tracks, genres = :genres, updatedAt = :updatedAt',
+      ReturnValues: 'ALL_NEW',
     };
-    callback(null, response);
-  });
+
+    dynamoDb.update(params, (error, result) => {
+      if (error) {
+        throw error;
+      }
+
+      callback(null, {
+        statusCode: 200,
+        body: JSON.stringify(result.Attributes),
+      });
+    });
+  } catch (e) {
+    console.error(e);
+    callback(null, {
+      statusCode: e.statusCode || 501,
+      headers: { 'Content-Type': 'text/plain' },
+      body: "Couldn't fetch the record item :(",
+    });
+  }
 };

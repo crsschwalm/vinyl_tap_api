@@ -21,11 +21,9 @@ export const get = (event, context, callback) => {
       return;
     }
 
-    // create a response
-    const response = {
+    callback(null, {
       statusCode: 200,
       body: JSON.stringify(result.Item),
-    };
-    callback(null, response);
+    });
   });
 };
