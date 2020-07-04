@@ -30,7 +30,7 @@ export const create = ({ body }: { body: string }, context, callback) => {
     callback(null, {
       statusCode: e.statusCode || 400,
       headers: { 'Content-Type': 'text/plain' },
-      body: "Couldn't create the record item :(",
+      body: e.message || "Couldn't create the record item :(",
     });
   }
 };

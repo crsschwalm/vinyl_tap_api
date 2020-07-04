@@ -14,7 +14,7 @@ export const list = (event, context, callback) => {
       callback(null, {
         statusCode: error.statusCode || 501,
         headers: { 'Content-Type': 'text/plain' },
-        body: "Couldn't fetch the records :(",
+        body: error.message || "Couldn't fetch the records :(",
       });
       return;
     }

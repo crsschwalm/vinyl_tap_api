@@ -16,7 +16,7 @@ const _delete = (event, context, callback) => {
       callback(null, {
         statusCode: error.statusCode || 501,
         headers: { 'Content-Type': 'text/plain' },
-        body: "Couldn't remove the record item :(",
+        body: error.message || "Couldn't remove the record item :(",
       });
       return;
     }

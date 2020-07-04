@@ -7,7 +7,7 @@ const fillAlbumDefaults = (albumData: AtLeast<Album, 'name'>): Album => {
 
   return {
     id: uuidv4(),
-    image: 'https://img.pngio.com/my-my-png-album-covers-500_500.png',
+    image: 'https://source.unsplash.com/random',
     artists: [],
     tracks: [],
     genres: [],
@@ -57,7 +57,7 @@ export const normalizeTrack = (
 
 export const normalizeArtist = (artistData: Partial<Artist>): Artist => {
   if (!artistData.name) {
-    throw new Error('No track name supplied');
+    throw new Error('No artist name supplied');
   }
 
   return artistData as Artist;

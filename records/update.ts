@@ -50,7 +50,7 @@ export const update = (
     callback(null, {
       statusCode: e.statusCode || 501,
       headers: { 'Content-Type': 'text/plain' },
-      body: "Couldn't fetch the record item :(",
+      body: e.message || "Couldn't fetch the record item :(",
     });
   }
 };
