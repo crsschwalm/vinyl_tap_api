@@ -1,4 +1,4 @@
-# Vinyl Tap API
+# Vinyl Tap API 👨‍🎤⚡️
 
 ## Pre-reqs
 
@@ -26,7 +26,7 @@ From root, run:\
 
 ### Optional Seeding
 
-**🚨 This is Dangerous 🚨**
+**🚨 This is Dangerous 🚨**\
 Checked in is a `.env` file.
 
 ```
