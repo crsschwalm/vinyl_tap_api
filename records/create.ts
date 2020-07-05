@@ -4,7 +4,12 @@ import { normalizeAlbum } from '../services/record-normalizer';
 
 const dynamoDb = new DynamoDB.DocumentClient();
 
-export const create = ({ body }: { body: string }, context, callback) => {
+export const create = (
+  { body }: { body: string },
+  context,
+  callback,
+  dynamoClient = dynamoDb,
+) => {
   const data: Partial<Album> = JSON.parse(body);
 
   try {
@@ -15,7 +20,7 @@ export const create = ({ body }: { body: string }, context, callback) => {
       Item: album,
     };
 
-    dynamoDb.put(params, (error) => {
+    dynamoClient.put(params, (error) => {
       if (error) {
         throw error;
       }

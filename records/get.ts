@@ -2,7 +2,7 @@ import { DynamoDB } from 'aws-sdk';
 
 const dynamoDb = new DynamoDB.DocumentClient();
 
-export const get = (event, context, callback) => {
+export const get = (event, context, callback, dynamoClient = dynamoDb) => {
   const params = {
     TableName: process.env.DYNAMODB_TABLE!,
     Key: {
@@ -10,7 +10,7 @@ export const get = (event, context, callback) => {
     },
   };
 
-  dynamoDb.get(params, (error, result) => {
+  dynamoClient.get(params, (error, result) => {
     if (error) {
       console.error(error);
       callback(null, {

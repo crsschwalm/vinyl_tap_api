@@ -2,7 +2,7 @@ import { DynamoDB } from 'aws-sdk';
 
 const dynamoDb = new DynamoDB.DocumentClient();
 
-const _delete = (event, context, callback) => {
+const _delete = (event, context, callback, dynamoClient = dynamoDb) => {
   const params = {
     TableName: process.env.DYNAMODB_TABLE!,
     Key: {
@@ -10,7 +10,7 @@ const _delete = (event, context, callback) => {
     },
   };
 
-  dynamoDb.delete(params, (error) => {
+  dynamoClient.delete(params, (error) => {
     if (error) {
       console.error(error);
       callback(null, {

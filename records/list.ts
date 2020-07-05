@@ -6,8 +6,8 @@ const params: DynamoDB.DocumentClient.ScanInput = {
   TableName: process.env.DYNAMODB_TABLE!,
 };
 
-export const list = (event, context, callback) => {
-  dynamoDb.scan(params, (error, result) => {
+export const list = (event, context, callback, dynamoClient = dynamoDb) => {
+  dynamoClient.scan(params, (error, result) => {
     if (error) {
       console.error(error);
 

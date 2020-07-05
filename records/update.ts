@@ -8,6 +8,7 @@ export const update = (
   { body, pathParameters }: { body: string; pathParameters: { id: string } },
   context,
   callback,
+  dynamoClient = dynamoDb,
 ) => {
   const data: Partial<Album> = JSON.parse(body);
 
@@ -35,7 +36,7 @@ export const update = (
       ReturnValues: 'ALL_NEW',
     };
 
-    dynamoDb.update(params, (error, result) => {
+    dynamoClient.update(params, (error, result) => {
       if (error) {
         throw error;
       }
