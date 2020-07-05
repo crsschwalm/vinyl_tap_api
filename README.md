@@ -1,5 +1,7 @@
 # Vinyl Tap API 👨‍🎤⚡️
 
+[AWS Api](https://ru7gn9ssdc.execute-api.us-east-1.amazonaws.com/dev/records) deployed via Serverless framework from local machine with [code](https://github.com/crsschwalm/vinyl_tap_api).
+
 ## Pre-reqs
 
 1. Install Serverless Framework\
@@ -40,6 +42,10 @@ From root, run:\
 
 There is also a script to wipe all data:\
 `yarn tear-down`
+
+### Tests
+
+Run `yarn test` to kickstart Jest test runner
 
 ## Usage
 
